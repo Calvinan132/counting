@@ -1,0 +1,132 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  border: 20px double black;
+  background-color: #808080;
+  position: relative;
+}
+/* Begin - Đếm ngày  */
+.day-counting {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background-color: pink;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.day-counting p {
+  line-height: 12px;
+  font-size: 20px;
+}
+
+.day-counting #day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+}
+/* End - Đếm ngày  */
+/* Begin - Date Counting */
+#wrapper-time {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  border: 2px solid pink;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  padding: 10px 0;
+}
+
+.date-counting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 6px;
+  width: 80px;
+  height: 80px;
+  background-color: pink;
+  border-radius: 5px;
+}
+.date-counting p {
+  display: block;
+  line-height: 12px;
+  color: white;
+}
+
+.date-counting p span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+#wrapper-now-time {
+  border: 0 6px #808080;
+}
+#now-time {
+  position: absolute;
+  bottom: -12px;
+  right: 15px;
+  padding: 0 10px;
+  background-color: rgb(245, 220, 224);
+  color: rgb(225, 138, 170);
+  font-weight: 600;
+  border-radius: 5px;
+}
+#start-date {
+  position: absolute;
+  bottom: -18px;
+  left: 15px;
+  padding: 6px;
+  color: white;
+  background-color: #8ad0f1;
+}
+/* End -Date Counting */
+
+.wrapper-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  width: 800px;
+  height: 500px;
+  background-color: #8ad0f1;
+  border: 5px solid black;
+  border-radius: 5px;
+  animation: modaltranslate ease 0.3s;
+}
+.wrapper-modal .modal-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 25px;
+  padding: 15px;
+  cursor: pointer;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+}
+.modal.open {
+  display: flex;
+}
