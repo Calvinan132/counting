@@ -44,31 +44,26 @@ function updateClock() {
   var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
   document.querySelector(".day-counting #day").textContent = totalDays;
 
-  var years = 0,
-    months = 0;
-  var tempDate = new Date(start);
+  // Tính số năm, tháng, ngày chính xác
+  var years = now.getFullYear() - start.getFullYear();
+  var months = now.getMonth() - start.getMonth();
+  var days = now.getDate() - start.getDate();
 
-  while (totalDays >= (isLeapYear(tempDate.getFullYear()) ? 366 : 365)) {
-    totalDays -= isLeapYear(tempDate.getFullYear()) ? 366 : 365;
-    tempDate.setFullYear(tempDate.getFullYear() + 1);
-    years++;
+  // Điều chỉnh nếu ngày âm (vượt quá ngày trong tháng)
+  if (days < 0) {
+    months--;
+    var prevMonthDays = daysInMonth(now.getFullYear(), now.getMonth());
+    days += prevMonthDays;
   }
 
-  while (
-    totalDays >= daysInMonth(tempDate.getFullYear(), tempDate.getMonth() + 1)
-  ) {
-    totalDays -= daysInMonth(tempDate.getFullYear(), tempDate.getMonth() + 1);
-    tempDate.setMonth(tempDate.getMonth() + 1);
-    months++;
+  // Điều chỉnh nếu tháng âm (vượt quá năm)
+  if (months < 0) {
+    years--;
+    months += 12;
   }
 
-  while (months >= 12) {
-    months -= 12;
-    years++;
-  }
-
-  var weeks = Math.floor(totalDays / 7);
-  var days = totalDays % 7;
+  var weeks = Math.floor(days / 7);
+  days = days % 7;
 
   document.querySelector(".date-counting #year").textContent = years
     .toString()
