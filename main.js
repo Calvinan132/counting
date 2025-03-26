@@ -41,7 +41,7 @@ function updateClock() {
   var start = new Date(dateInput.value);
   var now = new Date();
 
-  var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
   document.querySelector(".day-counting #day").textContent = totalDays;
 
   var years = 0,
