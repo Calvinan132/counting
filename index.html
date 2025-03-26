@@ -9,12 +9,18 @@
   </head>
   <body>
     <!-- Begin - Day Counting --> 
+    <div class="wrapper-day-counting">
+      </div>
+      <button class="day-counting js-day-counting">
+        <p><span id="day">00</span><br />Ngày</p>
+      </button>
+      <!-- End - Day Counting -->
+      <form action="" class="input-form js-input-form">
+        <p>Nhập ngày bắt đầu</p>
+        <input type="date" name="" id="date-input" required>
+        <input type="button" value="submit">
+      </form>
     </div>
-    <button class="day-counting js-day-counting">
-      <p><span id="day">00</span><br />Ngày</p>
-    </button>
-    <!-- End - Day Counting -->
-    
     <!-- Begin - Date counting -->
     <div class="modal js-modal">
       <div class="wrapper-modal js-wrapper-modal ">
@@ -46,12 +52,14 @@
           <!-- End - Now time  -->
           <!-- Begin - start date -->
           <div id="start-date">
-            <p># <span id="date"> 04/02/2025 </span> #</p>
+            <p># <span id="date"> 00/00/0000 </span> #</p>
           </div>
-          <!-- End - start date -->
-          <!-- End - Date counting -->
+        </div>
       </div>
     </div>
-    <script src="main.js"></script>
+      <!-- End - start date -->
+      <!-- End - Date counting -->
+      
+<script src="main.js"></script>
   </body>
 </html>

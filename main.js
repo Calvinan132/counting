@@ -1,57 +1,109 @@
 function formatDate(dateStr) {
-  let [year, month, day] = dateStr.split("/");
+  let [year, month, day] = dateStr.split("-");
   return `${day}/${month}/${year}`;
 }
+
+function isLeapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+function daysInMonth(year, month) {
+  return [
+    31,
+    isLeapYear(year) ? 29 : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31,
+  ][month - 1];
+}
+
+var dateInput = document.querySelector(".js-input-form #date-input");
+// Khôi phục giá trị ngày đã lưu
+var savedDate = localStorage.getItem("savedDate");
+if (savedDate) {
+  dateInput.value = savedDate;
+}
 function updateClock() {
-  // Begin - Nhập ngày
-  var dStart = "2023/12/24";
-  // End - Nhập ngày
-  var start = new Date(dStart);
-  var now = new Date();
-  var diff = now - start;
-  var days, weeks, months, years;
-  days = now.getDate() - start.getDate();
-  day1 = Math.floor(diff / (1000 * 60 * 60 * 24));
-  // Begin - day-counting
-  document.querySelector(".day-counting #day").textContent = day1;
-  //   Begin - Date
-  weeks = Math.floor(days / 7);
-  months =
-    (now.getFullYear() - start.getFullYear()) * 12 +
-    (now.getMonth() - start.getMonth());
-  years = now.getFullYear() - start.getFullYear() - 1;
-  while (weeks >= 4) {
-    weeks -= 4;
+  if (!dateInput.value) {
+    document.querySelector(".day-counting #day").textContent = "00";
+    return;
   }
-  document.querySelector(".date-counting #day").textContent =
-    days % 7 < 10 ? "0" + (days % 7) : days % 7;
-  document.querySelector(".date-counting #week").textContent = "0" + weeks;
-  document.querySelector(".date-counting #month").textContent =
-    months % 12 < 10 ? "0" + (months % 12) : months % 12;
-  document.querySelector(".date-counting #year").textContent =
-    years < 10 ? "0" + years : years;
-  // End - Date
-  // Begin - now time
-  var hours = now.getHours();
-  var minutes = now.getMinutes();
-  var seconds = now.getSeconds();
-  document.querySelector("#now-time #hours").textContent =
-    hours < 10 ? "0" + hours : hours;
-  document.querySelector("#now-time #minutes").textContent =
-    minutes < 10 ? "0" + minutes : minutes;
-  document.querySelector("#now-time #seconds").textContent =
-    seconds < 10 ? "0" + seconds : seconds;
-  // Begin - start-date
-  document.querySelector("#start-date #date").textContent = formatDate(dStart);
+  // Lưu ngày nhập vào localStorage
+  localStorage.setItem("savedDate", dateInput.value);
+
+  var start = new Date(dateInput.value);
+  var now = new Date();
+
+  var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  document.querySelector(".day-counting #day").textContent = totalDays;
+
+  var years = 0,
+    months = 0;
+  var tempDate = new Date(start);
+
+  while (totalDays >= (isLeapYear(tempDate.getFullYear()) ? 366 : 365)) {
+    totalDays -= isLeapYear(tempDate.getFullYear()) ? 366 : 365;
+    tempDate.setFullYear(tempDate.getFullYear() + 1);
+    years++;
+  }
+
+  while (
+    totalDays >= daysInMonth(tempDate.getFullYear(), tempDate.getMonth() + 1)
+  ) {
+    totalDays -= daysInMonth(tempDate.getFullYear(), tempDate.getMonth() + 1);
+    tempDate.setMonth(tempDate.getMonth() + 1);
+    months++;
+  }
+
+  while (months >= 12) {
+    months -= 12;
+    years++;
+  }
+
+  var weeks = Math.floor(totalDays / 7);
+  var days = totalDays % 7;
+
+  document.querySelector(".date-counting #year").textContent = years
+    .toString()
+    .padStart(2, "0");
+  document.querySelector(".date-counting #month").textContent = months
+    .toString()
+    .padStart(2, "0");
+  document.querySelector(".date-counting #week").textContent = weeks
+    .toString()
+    .padStart(2, "0");
+  document.querySelector(".date-counting #day").textContent = days
+    .toString()
+    .padStart(2, "0");
+
+  var hours = now.getHours().toString().padStart(2, "0");
+  var minutes = now.getMinutes().toString().padStart(2, "0");
+  var seconds = now.getSeconds().toString().padStart(2, "0");
+
+  document.querySelector("#now-time #hours").textContent = hours;
+  document.querySelector("#now-time #minutes").textContent = minutes;
+  document.querySelector("#now-time #seconds").textContent = seconds;
+
+  document.querySelector("#start-date #date").textContent = formatDate(
+    dateInput.value
+  );
 }
 
 setInterval(updateClock, 1000);
 updateClock();
-// Open modal
+
+// Xử lý modal
 var modal = document.querySelector(".js-modal");
 var oModal = document.querySelector(".js-day-counting");
 var hModal = document.querySelector(".js-modal-close");
-var modalwrapper = document.querySelector(".js-wrapper-modal");
+var modalWrapper = document.querySelector(".js-wrapper-modal");
 function showModal() {
   modal.classList.add("open");
 }
@@ -61,4 +113,4 @@ function hideModal() {
 oModal.addEventListener("click", showModal);
 hModal.addEventListener("click", hideModal);
 modal.addEventListener("click", hideModal);
-modalwrapper.addEventListener("click", (e) => e.stopPropagation());
+modalWrapper.addEventListener("click", (e) => e.stopPropagation());

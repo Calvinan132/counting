@@ -6,26 +6,28 @@
 
 body {
   height: 100vh;
-  border: 20px double black;
-  background-color: #808080;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* Begin - Đếm ngày  */
 .day-counting {
   position: absolute;
   left: 50%;
-  top: 150px;
+  top: 100px;
   transform: translateX(-50%);
-  width: 100px;
-  height: 100px;
-  background-color: pink;
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border: 10px double black;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .day-counting p {
-  line-height: 12px;
+  line-height: 15px;
   font-size: 20px;
 }
 
@@ -108,7 +110,7 @@ body {
   background-color: #8ad0f1;
   border: 5px solid black;
   border-radius: 5px;
-  animation: modaltranslate ease 0.3s;
+  animation: modalTranslate ease 0.3s;
 }
 .wrapper-modal .modal-close {
   position: absolute;
@@ -129,4 +131,64 @@ body {
 }
 .modal.open {
   display: flex;
+}
+
+.input-form {
+  position: absolute;
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.input-form p {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.input-form input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  cursor: pointer;
+}
+
+.input-form input[type="button"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: #3498db;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.input-form input[type="button"]:hover {
+  background: #2980b9;
+}
+
+#output {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.wrapper-day-counting {
+  width: 900px;
+  min-height: 100vh;
+  background-color: rgba(128, 128, 128, 0.119);
+  border-left: 2px solid black;
+  border-right: 2px solid black;
 }
