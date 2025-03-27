@@ -99,10 +99,8 @@ function updateClock() {
 
   document.querySelector("#start-date #date").textContent =
     formatDate(dateInput);
+  currentDays = totalDays % 100;
 }
-
-setInterval(updateClock, 1000);
-updateClock();
 
 // Xử lý modal
 var modal = document.querySelector(".js-modal");
@@ -120,3 +118,67 @@ hModal.addEventListener("click", hideModal);
 modal.addEventListener("click", hideModal);
 modalWrapper.addEventListener("click", (e) => e.stopPropagation());
 //
+
+// Hiệu ứng cát động
+let currentDays;
+let canvas = document.getElementById("sandCanvas");
+let ctx = canvas.getContext("2d");
+let sandParticles = [];
+
+function resizeCanvas() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+}
+
+function createSandParticle() {
+  return {
+    x: Math.random() * canvas.width,
+    y: 0,
+    speed: Math.random() * 2 + 1,
+    size: Math.random() * 2 + 1,
+  };
+}
+
+function drawSand() {
+  resizeCanvas();
+  let sandHeight = (canvas.height * currentDays) / 100;
+  let waveHeight = 5;
+  let waveLength = 40;
+  let speed = Date.now() / 50;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(0, 0, 255, 0.4)";
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height - sandHeight);
+
+  for (let x = 0; x <= canvas.width; x += 5) {
+    let y = Math.sin((x + speed) / waveLength) * waveHeight;
+    ctx.lineTo(x, canvas.height - sandHeight + y);
+  }
+
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.lineTo(0, canvas.height);
+  ctx.closePath();
+  ctx.fill();
+
+  // Vẽ các hạt cát rơi xuống
+  ctx.fillStyle = "rgba(0, 206, 255, 0.4)";
+  sandParticles.forEach((particle, index) => {
+    particle.y += particle.speed;
+    if (particle.y > canvas.height - sandHeight) sandParticles.splice(index, 1);
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  if (Math.random() < 0.2) {
+    sandParticles.push(createSandParticle());
+  }
+
+  requestAnimationFrame(drawSand);
+}
+
+drawSand();
+
+setInterval(updateClock, 1000);
+updateClock();
