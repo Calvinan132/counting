@@ -24,25 +24,36 @@ function daysInMonth(year, month) {
   ][month - 1];
 }
 
-var dateInput = document.querySelector(".js-input-form #date-input");
+var dateButton = document.querySelector(".js-input-form #date-button");
 // Khôi phục giá trị ngày đã lưu
 var savedDate = localStorage.getItem("savedDate");
 if (savedDate) {
-  dateInput.value = savedDate;
+  var dateInput = savedDate;
 }
+document
+  .querySelector(".js-input-form #date-input")
+  .setAttribute("max", new Date().toISOString().split("T")[0]);
+dateButton.addEventListener("click", function () {
+  var input = document.querySelector(".js-input-form #date-input").value;
+
+  if (document.querySelector(".js-input-form #date-input").value == "") return;
+  else dateInput = document.querySelector(".js-input-form #date-input").value;
+
+  localStorage.setItem("savedDate", dateInput); // Lưu vào localStorage
+  updateClock();
+});
+
 function updateClock() {
-  if (!dateInput.value) {
+  if (!dateInput) {
     document.querySelector(".day-counting #day").textContent = "00";
     return;
   }
-  // Lưu ngày nhập vào localStorage
-  localStorage.setItem("savedDate", dateInput.value);
 
-  var start = new Date(dateInput.value);
+  var start = new Date(dateInput);
   var now = new Date();
 
   var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
-  document.querySelector(".day-counting #day").textContent = totalDays;
+  document.querySelector(".day-counting #day").textContent = totalDays - 1;
 
   // Tính số năm, tháng, ngày chính xác
   var years = now.getFullYear() - start.getFullYear();
@@ -86,9 +97,8 @@ function updateClock() {
   document.querySelector("#now-time #minutes").textContent = minutes;
   document.querySelector("#now-time #seconds").textContent = seconds;
 
-  document.querySelector("#start-date #date").textContent = formatDate(
-    dateInput.value
-  );
+  document.querySelector("#start-date #date").textContent =
+    formatDate(dateInput);
 }
 
 setInterval(updateClock, 1000);
